@@ -71,7 +71,10 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+      //dd($request->all());
+        $question->update($request->all());
+
+        return response('Update',201);
     }
 
     /**
