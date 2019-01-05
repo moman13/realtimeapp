@@ -12,6 +12,12 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function __construct()
+     {
+         $this->middleware('JWT', ['except' => ['index','show']]);
+     }
+
+
     public function index()
     {
       return QuestionResource::collection(Question::latest()->get());
@@ -36,7 +42,10 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
       //dd($request->all());
-      Question::create($request->all());
+      $request['slug']=str_slug($request->title);
+     $question= auth()->user()->question()->create($request->all());
+      //Question::create($request->all());
+        return response(new QuestionResource($question));
 
     }
 
